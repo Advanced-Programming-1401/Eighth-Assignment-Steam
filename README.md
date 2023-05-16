@@ -83,7 +83,7 @@ In this assignment you are tasked with creating an Jave application designed to 
     | id  | text  |  A unique identifier for the account |
     | username  | text  |  Username of the account  |
     | password | text  |  Hashed password of the account  |
-    | date_of_birth
+    | date_of_birth | date | The user's database |
     
     
     #### 3.3. Downloads
@@ -145,8 +145,8 @@ Regardless of how you implement the database, it must be able to answer question
 ## Bonus Objectives
 1. Add a GUI (Graphical User Interface) to your project. It's recommended to use JavaFX. This GUI should include all of the options offered by the command line menu you implemented earlier. Once a download is complete, display the PNG picture received from the database.
 2. Use multithreading in the server side code to allow multiple clients to connect concurrently. This can be done by creating a main listener thread that awaits for connections from clients. Once a client has connected, create a new thread to handle that specific client.
-3. Use multithreading to speed up the download process
-4. impelement age restriction for games
+3. Use multithreading to speed up the download process by creating multiple datastreams that run in parallel to each other.
+4. impelement age restriction for games. Prevent users who are younger than a specified age to access certain games. You can add a new age restriction column to the `Games` table.
 
 
 ## Evaluation
