@@ -82,7 +82,7 @@ The Server component is responsible for handling Client requests, managing the d
 The Server's database plays a central role in storing essential data. You are allowed to use a SQL-based database or a NoSQL database (such as MongoDB). Remember to add the necessary `JDBC` (java database connectivity) dependency to your project.
 <br>The database must contain the following data: 
 
-<br>**Note that you are allowed to change the structure and number of tables, but you have to store all the mentioned attributes.**
+<br>**- Note that you are allowed to change the structure and number of tables, but you have to store all the mentioned attributes.**
 
 #### 3.1. Games
 This table stores information about video games, including their attributes.
@@ -91,13 +91,14 @@ This table stores information about video games, including their attributes.
 |--------------------|------------------|-------------------------------------------------------------------------------------|
 | id                 | text             | A unique identifier for the game                                                    |
 | title              | text             | Title of the video game                                                             |
+| developer          | text             | Name of the studio that developed the game                                          |
 | genre              | text             | Genre of the video game                                                             |
 | price              | double precision | Current price of the video game                                                     |
 | release_year       | integer          | The game's release year                                                             |
 | controller_support | boolean          | This parameter is True if the game supports controllers                             |
-| reviews            | integer          | A value from 0 to 100 indicating the game's average review score (higher is better) |
+| reviews            | integer          | A value from 0 to 100 indicating the game's average user score on Steam (higher is better) |
 | size               | integer          | Size of the game in kilobytes                                                       |
-| file_path          | text             | Path of the game file stored in the resources folder                                |
+| file_path          | text             | Path of the game file stored in the `Resources` folder                              |
 
 
 #### 3.2. Accounts
@@ -118,7 +119,7 @@ This table stores information about user downloads.
 |----------------|-----------|--------------------------------------------------|
 | account_id     | text      | A unique identifier for an existing account      |
 | game_id        | text      | A unique identifier for an existing game         |
-| download_count | Integer   | The number of times a user has downloaded a game |
+| download_count | Integer   | The number of times a user has downloaded a specific game |
 
 
 
@@ -129,13 +130,14 @@ Regardless of how you implement the database, it must be able to answer question
 - How many DISTINCT users have downloaded a game?
 
 
-### 4. **Import the necessary data from the `Resources` folder**
+### 4. **Import the necessary data from the Resources folder**
 - Alongside the Server component, a `Resources` folder is provided that stores 10 TXT files (each storing a game's details) and 10 PNG files (each representing a game's data). The TXT files and the PNG files are paired together based on their names (which is always the game id).
 - Before the Server starts accepting requests from clients, it must first import all the game data from TXT files and store them in the database. This is a one-time only process, once the data has been successfully imported to the database, the Server doesn't need to import the data on subsequent runs.
-- Ensure to store each PNG file's path in the `file_path` column of the video game table. Every time a user requests to download a specific video game, the Server must send the respective PNG file to the Client. The Client then stores that file in the `Downloads` folder
+- Ensure to store each PNG file's path in the `file_path` column of the `Games` table. Every time a user requests to download a specific video game, the Server must send the respective PNG file to the Client. The Client then stores that file in the `Downloads` folder
 - Each TXT file is structured like this:
     - gameid
     - title
+    - developer
     - genre
     - price
     - release_year
@@ -146,6 +148,7 @@ Regardless of how you implement the database, it must be able to answer question
     <br>Here's an example of a TXT file:
     >   2050650
         <br>Resident Evil 4
+        <br>Capcom
         <br>Survival Horror
         <br>59.99
         <br>2023
