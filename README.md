@@ -1,4 +1,3 @@
-# Eighth-Assignment-Steam
 
 <p align="center">
   <a href="https://store.steampowered.com">
