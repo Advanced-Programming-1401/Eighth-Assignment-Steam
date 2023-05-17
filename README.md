@@ -131,7 +131,7 @@ Regardless of how you implement the database, it must be able to answer question
 
 
 ### 4. **Import the necessary data from the Resources folder**
-- Alongside the Server component, a `Resources` folder is provided that stores 10 TXT files (each storing a game's details) and 10 PNG files (each representing a game's data). The TXT files and the PNG files are paired together based on their names (which is always the game id).
+- Alongside the Server component, a `Resources` folder is provided that stores 10 TXT files (each storing a game's attributes) and 10 PNG files (each representing a game's data). The TXT files and the PNG files are paired together based on their names (which is always the game id).
 - Before the Server starts accepting requests from clients, it must first import all the game data from TXT files and store them in the database. This is a one-time-only process, once the data has been successfully imported to the database, the Server doesn't need to import the data on subsequent runs.
 - Ensure to store each PNG file's path in the `file_path` column of the `Games` table. Whenever a user requests to download a specific video game, the Server must send the respective PNG file to the Client. The Client then stores that file in the `Downloads` folder
 - Each TXT file is structured like this:
