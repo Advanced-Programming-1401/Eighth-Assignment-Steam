@@ -50,7 +50,7 @@ The Client and Server are the two main components of your app. They must be conn
 #### 2.1. Client
 The Client component must provide a graphical or command-line interface for users to interact with the app. It should allow users to:
 - Create accounts by providing a username, a password, and a date of birth (DOB)
-- Login and logout securely (more info in [section 5](#5-use-a-hashing-algorithm-to-provide-security-for-accounts))
+- Log in and log out securely (more info in [section 5](#5-use-a-hashing-algorithm-to-provide-security-for-accounts))
 - Browse the available video game catalog
 - View each individual game's details
 - Download video game files and manage these downloads 
@@ -65,7 +65,7 @@ The Client component must provide a graphical or command-line interface for user
 
 #### 2.2. Server
 The Server component is responsible for handling Client requests, managing the database, and sending video game files to the Client. Before a Server is ready to accept clients, it must connect to the database to access the stored information:
-- At the start of the first run of your Server, it must read data from the files located in the `Resources` folder and import it to the database. This process is explained in more detail in [section 4](#4-import-the-necessary-data-from-the-resources-folder)).
+- At the start of the first run of your Server, it must read data from the files located in the `Resources` folder and import it to the database. This process is explained in more detail in [section 4](#4-import-the-necessary-data-from-the-resources-folder).
 - Your program must run a query on the database according to the received Request.
 - Every time a new account is created, the account credentials must be added to the database.
 - If a user requests to download a video game, you must update the number of times that the game has been downloaded by that user.
