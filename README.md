@@ -109,7 +109,7 @@ This table stores information about user accounts.
 | id            | text      | A unique identifier for the account |
 | username      | text      | Username of the account             |
 | password      | text      | Hashed password of the account      |
-| date_of_birth | date      | The user's database                 |
+| date_of_birth | date      | The user's date of birth            |
 
 
 #### 3.3. Downloads
