@@ -1,6 +1,12 @@
 # Eighth-Assignment-Steam
 
+<a href="https://store.steampowered.com/
+" target="_blank"><p align="center">
+  <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016">
+</p></a>
+
 ## Introduction
+
 In this assignment you are tasked with creating a Java application designed to handle the management and download of video game data, similar to Steam. Steam is an online platform that distributes video game in a digital format. The application you will develop is simpler in design, as it does not have any purchase or trade features.
 
 <br>The app consists of separate server and client components, connected to each other using socket programming. The server component maintains a database to store information about video games and user accounts. The client side of the app allows clients to request a list of available video games, obtain detailed information about them, and download the corresponding game files using a download manager.
@@ -40,7 +46,7 @@ You must implement two main components: the the **Client** and **Server**. The s
 #### 2.1. Client
 The client component must provide a graphical or command-line interface for users to interact with the app. It should allow users to:
 - Create accounts by providing a username, a password, and a date of birth (DOB)
-- Login and logout securely (more info in [section 5](#Use-a-hashing-algorithm-to-provide-security-for-user-accounts))
+- Login and logout securely (more info in [section 5](#use-a-hashing-algorithm-to-provide-security-for-user-accounts))
 - Browse the available video game catalogue
 - View each individual game's details
 - Download video game files and manage these downloads 
@@ -55,7 +61,7 @@ The client component must provide a graphical or command-line interface for user
 
 #### 2.2. Server
 The server component is responsible for handling client requests, managing the database, and sending video game files to the client. Before a server is ready to accept clients, it must connect to the database to access information about video games and user accounts:
-- At the start of the first run of your server, it must read data from the files located in the `Resources` folder and import it to the database. This process in explained with more detail in [section 4](#Import-the-necessary-data-from-the-Resources-folder)). 
+- At the start of the first run of your server, it must read data from the files located in the `Resources` folder and import it to the database. This process in explained with more detail in [section 4](#import-the-necessary-data-from-the-Resources-folder)). 
 - Your program must run a query on the database according to the received Request.
 - Every time a new account is created, the account credentials must be added to the database.
 - If a user requests to download a video game, you must update the number of times that the game has been downloaded by that user.
@@ -64,7 +70,7 @@ The server component is responsible for handling client requests, managing the d
 
 - Socket Listener: Listen for incoming client connections and redirect requests to the appropriate handlers. Once a request has been fully handled, enter listening mode again.
 - Request Handlers: Process client Requests and interact with the database to fetch the requested data. You may need to create multiple handlers for various Requests.
-- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. ([more info in section 3](#Create-a-Database-to-store-the-app's-data-persistently))
+- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. ([more info in section 3](#create-a-Database-to-store-the-app's-data-persistently))
 - Response Generator: The final step in handling a Request is to send an appropriate Response to the client. Attach the needed data to the Response based on the Request.
 - Logging: Try to log every major action the server performs (e.g. accepting a client, sending a file, etc.) to simplify the debugging process.
 
