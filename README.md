@@ -36,7 +36,7 @@ A Request must have these features:
 
 #### 1.2. Response
 A Response must have these features:
-- A Response is sent from the Client to the Server over the network. 
+- A Response is sent from the Server to the Client over the network. 
 - You should create different Response types corresponding to the received Request. 
 - Attach appropriate data to the Response based on the Request. A Response might contain the data a user has requested, or it might just be a boolean indicating the result of a previously sent Request (such as confirming a user's login attempt by returning a True boolean).
 - It is up to you to design the Response's format. Similar to a Request, a Response can also be a JSON string.
