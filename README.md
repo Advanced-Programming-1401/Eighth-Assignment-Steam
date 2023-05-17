@@ -80,7 +80,7 @@ The Server component is responsible for handling Client requests, managing the d
 
     
 ### 3. **Create a Database to store the app's data persistently**
-The Server's database plays a central role in storing essential data. You are allowed to use a SQL-based database or a NoSQL database (such as MongoDB). Remember to add the necessary `JDBC` (java database connectivity) dependency to your project.
+The Server's database plays a central role in storing essential data. You are allowed to use a SQL-based database or a NoSQL database (such as MongoDB). Remember to add the necessary `JDBC` (Java Database Connectivity) dependency to your project.
 <br>The database must contain the following data: 
 
 
@@ -173,7 +173,7 @@ Regardless of how you implement the database, it must be able to answer question
 
 
 ## Notes
-- You are allowed to modify or delete all the provided code. Do not limit yourself to the existing classes and methods.
+- You are allowed to modify or delete all the provided code. Add as many classes and tables as you need. Do not limit yourself to the existing classes and methods.
 - You are NOT allowed to change the contents of the `Resources` folder located on the Server side.
 - Note that the Client side of the program cannot access the database directly and must connect to the Server to ask for data.
 - If you decide to use JSON strings in your program, you may find the `gson` package to be useful for serializing a Java object to JSON.
