@@ -10,7 +10,8 @@
 In this assignment you are tasked with creating a Java application designed to handle the management and download of video game data, similar to Steam. Steam is an online platform that distributes video games in a digital format. 
 - The application you will develop is simpler in design. It doesn't need to have many of the features available in Steam, such as the ability to purchase or trade video games.
 
-The app consists of separate Server and Client components, connected to each other using socket programming. The Server component maintains a database to store information about video games and user accounts. The server also keeps a collection of video game files. The Client side of the app allows clients to request a list of available video games, obtain detailed information about them, and download the corresponding game files using a download manager.
+The app consists of separate Server and Client components, connected to each other using socket programming. The Server component maintains a database to store information, and the Client side of the app allows clients to request information and files from the server.
+
 
 ## Objectives
 - Review the concepts of socket programming and database management.
@@ -43,13 +44,13 @@ A Response must have these features:
 Note that each Request received from the Client must be answered with a Response from the Server. Include details about how you designed the Request-Response interactions in your report. 
     
 ### 2. **Design the application's architecture**
-You must implement two main components: the **Client** and **Server**. The Server must be able to connect to a Database, and the Client should have a download manager component. The Client and Server must be connected through the use of a socket connection.
-<br>Plan out your project's files accordingly. Any file designed for the Client side must be stored in the `Client` package and any file designed for the Server must be stored in the `Server` package. Classes that can be used by both sides should be stored in the `Shared` package.
+The Client and Server are the two main components of your app. They must be connected through the use of a socket connection.
+<br>Plan out your project's files accordingly. Any file designed for the Client side must be stored in the `Client` package and any file designed for the Server side must be stored in the `Server` package. Classes that can be used by both sides should be stored in the `Shared` package.
 
 #### 2.1. Client
 The Client component must provide a graphical or command-line interface for users to interact with the app. It should allow users to:
 - Create accounts by providing a username, a password, and a date of birth (DOB)
-- Login and logout securely (more info in [section 5](#5-use-a-hashing-algorithm-to-provide-security-for-user-accounts))
+- Login and logout securely (more info in [section 5](#5-use-a-hashing-algorithm-to-provide-security-for-accounts))
 - Browse the available video game catalog
 - View each individual game's details
 - Download video game files and manage these downloads 
@@ -63,8 +64,8 @@ The Client component must provide a graphical or command-line interface for user
 
 
 #### 2.2. Server
-The Server component is responsible for handling Client requests, managing the database, and sending video game files to the Client. Before a Server is ready to accept clients, it must connect to the database to access information about video games and user accounts:
-- At the start of the first run of your Server, it must read data from the files located in the `Resources` folder and import it to the database. This process is explained in more detail in [section 4](#4-import-the-necessary-data-from-the-Resources-folder)).
+The Server component is responsible for handling Client requests, managing the database, and sending video game files to the Client. Before a Server is ready to accept clients, it must connect to the database to access the stored information:
+- At the start of the first run of your Server, it must read data from the files located in the `Resources` folder and import it to the database. This process is explained in more detail in [section 4](#4-import-the-necessary-data-from-the-resources-folder)).
 - Your program must run a query on the database according to the received Request.
 - Every time a new account is created, the account credentials must be added to the database.
 - If a user requests to download a video game, you must update the number of times that the game has been downloaded by that user.
@@ -82,7 +83,6 @@ The Server component is responsible for handling Client requests, managing the d
 The Server's database plays a central role in storing essential data. You are allowed to use a SQL-based database or a NoSQL database (such as MongoDB). Remember to add the necessary `JDBC` (java database connectivity) dependency to your project.
 <br>The database must contain the following data: 
 
-<br>**- Note that you are allowed to change the structure and number of tables, but you have to store all the mentioned attributes.**
 
 #### 3.1. Games
 This table stores information about video games, including their attributes.
@@ -121,7 +121,7 @@ This table stores information about user downloads.
 | game_id        | text      | A unique identifier for an existing game         |
 | download_count | Integer   | The number of times a user has downloaded a specific game |
 
-
+<br>**- Note that you are allowed to change the structure and number of tables, but you are required to store all the mentioned attributes.**
 
 Regardless of how you implement the database, it must be able to answer questions such as:
 - How many accounts have been created?
@@ -165,7 +165,7 @@ Regardless of how you implement the database, it must be able to answer question
 
 ### 6. **Provide a backup of the database you created**
 - There are multiple ways to back up your database based on the DBMS you're using.
-- In PostgreSQL for example, you can use pgAdmin to right-click on your database and choose the Backup option to save a copy of your database.
+- If you're using PostgreSQL for example, you can open pgAdmin, right-click on your database, and choose the Backup option to save a copy of your database.
 - Place the backup file in the project's `Database Backup` folder.
 
 
