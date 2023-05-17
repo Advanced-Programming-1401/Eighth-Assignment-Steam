@@ -18,6 +18,7 @@ In this assignment you are tasked with creating a Java application designed to h
 - Allow clients to create accounts, login, and logout.
 - Use a hashing algorithm to implement secure password storage.
 - Enable clients to download video game files (represented by PNG files for simplicity) from the Server.
+- Write a detailed report on the assignment.
 
 ## Tasks
 Ensure to Fork this repository and clone the fork to your local machine. Create a new Git branch before starting your work.
@@ -39,7 +40,7 @@ A Response must have these features:
 - Attach appropriate data to the Response based on the Request. A Response might contain the data a user has requested, or it might just be boolean indicating the result of a previously sent Request (such as confirming a user's login attempt by returning a True boolean).
 - It is up to you to design the Response's format. Similar to a Request, a Response can also be a JSON string.
 
-Note that each Request received from the Client must be answered with a Response from the Server. 
+Note that each Request received from the Client must be answered with a Response from the Server. Include details about how you designed the Request-Response interactions in your report. 
     
 ### 2. **Design the application's architecture**
 You must implement two main components: the **Client** and **Server**. The Server must be able to connect to a Database, and the Client should have a download manager component. The Client and Server must be connected through the use of a socket connection.
@@ -165,15 +166,15 @@ Regardless of how you implement the database, it must be able to answer question
 - Place the backup file in the `Database Backup` folder of the project.
 
 
-### 7. **Commit your changes and push your commits to your fork on GitHub. Create a pull request (assigned to your mentor) to merge your changes to the main branch of your fork on GitHub**.
+#### 7.Commit your changes and push your commits to your fork on GitHub. Create a pull request (assigned to your mentor) to merge your changes to the main branch of your fork on GitHub.
 
 
 ## Notes
 - You are allowed to modify or delete all the provided code. Do not limit yourself to the existing classes and methods.
-- You are NOT allowed to change the contents of the `resources` folder located on the Server side.
+- You are NOT allowed to change the contents of the `Resources` folder located on the Server side.
 - Note that the Client side of the program cannot access the database directly and must connect to the Server to ask for data.
 - If you decide to use JSON strings in your program, you may find the `gson` package to be useful for serializing a Java object to JSON.
-- Your report should include details on the architecture you used for the app, as well as the design process of your database. Provide adequate explanation regarding each table. Specify the primary key chosen for each table and how you ensured it would be unique.
+- Your report should include details on the architecture you used for the app, as well as the design process of your database. Provide adequate explanation regarding each component of the app. Specify the primary key chosen for each table and how you ensured it would be unique.
 
 
 ## Bonus Objectives
