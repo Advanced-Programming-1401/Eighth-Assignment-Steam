@@ -169,7 +169,7 @@ Regardless of how you implement the database, it must be able to answer question
 - Place the backup file in the `Database Backup` folder of the project.
 
 
-#### 7.Commit your changes and push your commits to your fork on GitHub. Create a pull request (assigned to your mentor) to merge your changes to the main branch of your fork on GitHub.
+#### 7. Commit your changes and push your commits to your fork on GitHub. Create a pull request (assigned to your mentor) to merge your changes to the main branch of your fork on GitHub.
 
 
 ## Notes
