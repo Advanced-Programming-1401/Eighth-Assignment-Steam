@@ -1,9 +1,10 @@
 # Eighth-Assignment-Steam
 
-<a href="https://store.steampowered.com/
-" target="_blank"><p align="center">
-  <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016">
-</p></a>
+<p align="center">
+  <a href="https://store.steampowered.com">
+    <img src="https://store.cloudflare.steamstatic.com/public/shared/images/header/logo_steam.svg?t=962016">
+  </a>
+</p>
 
 ## Introduction
 
@@ -46,7 +47,7 @@ You must implement two main components: the the **Client** and **Server**. The s
 #### 2.1. Client
 The client component must provide a graphical or command-line interface for users to interact with the app. It should allow users to:
 - Create accounts by providing a username, a password, and a date of birth (DOB)
-- Login and logout securely (more info in [section 5](#use-a-hashing-algorithm-to-provide-security-for-user-accounts))
+- Login and logout securely (more info in [section 5](#5-use-a-hashing-algorithm-to-provide-security-for-user-accounts))
 - Browse the available video game catalogue
 - View each individual game's details
 - Download video game files and manage these downloads 
@@ -61,7 +62,7 @@ The client component must provide a graphical or command-line interface for user
 
 #### 2.2. Server
 The server component is responsible for handling client requests, managing the database, and sending video game files to the client. Before a server is ready to accept clients, it must connect to the database to access information about video games and user accounts:
-- At the start of the first run of your server, it must read data from the files located in the `Resources` folder and import it to the database. This process in explained with more detail in [section 4](#import-the-necessary-data-from-the-Resources-folder)). 
+- At the start of the first run of your server, it must read data from the files located in the `Resources` folder and import it to the database. This process in explained with more detail in [section 4](#4-import-the-necessary-data-from-the-Resources-folder)).
 - Your program must run a query on the database according to the received Request.
 - Every time a new account is created, the account credentials must be added to the database.
 - If a user requests to download a video game, you must update the number of times that the game has been downloaded by that user.
@@ -70,7 +71,7 @@ The server component is responsible for handling client requests, managing the d
 
 - Socket Listener: Listen for incoming client connections and redirect requests to the appropriate handlers. Once a request has been fully handled, enter listening mode again.
 - Request Handlers: Process client Requests and interact with the database to fetch the requested data. You may need to create multiple handlers for various Requests.
-- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. ([more info in section 3](#create-a-Database-to-store-the-app's-data-persistently))
+- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. ([more info in section 3](#3-create-a-Database-to-store-the-app's-data-persistently))
 - Response Generator: The final step in handling a Request is to send an appropriate Response to the client. Attach the needed data to the Response based on the Request.
 - Logging: Try to log every major action the server performs (e.g. accepting a client, sending a file, etc.) to simplify the debugging process.
 
