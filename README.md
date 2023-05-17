@@ -71,7 +71,7 @@ The server component is responsible for handling client requests, managing the d
 
 - Socket Listener: Listen for incoming client connections and redirect requests to the appropriate handlers. Once a request has been fully handled, enter listening mode again.
 - Request Handlers: Process client Requests and interact with the database to fetch the requested data. You may need to create multiple handlers for various Requests.
-- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. ([more info in section 3](#3-create-a-Database-to-store-the-app's-data-persistently))
+- Database Manager: Interact with the database system to perform CRUD (Create, Read, Update, Delete) operations. (more info in [section 3](#3-create-a-database-to-store-the-apps-data-persistently))
 - Response Generator: The final step in handling a Request is to send an appropriate Response to the client. Attach the needed data to the Response based on the Request.
 - Logging: Try to log every major action the server performs (e.g. accepting a client, sending a file, etc.) to simplify the debugging process.
 
