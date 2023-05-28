@@ -1,27 +1,23 @@
 package Client;
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
+
 
 public class ClientMain
 {
-    // initialize socket and input output streams
-    private Socket socket            = null;
-    private DataInputStream  input   = null;
-    private DataOutputStream out     = null;
+    private static Socket socket            = null;
+    private static DataInputStream  input   = null;
+    private static DataOutputStream out     = null;
 
-    // constructor to put ip address and port
     public ClientMain(String address, int port)
     {
-        // establish a connection
         try
         {
             socket = new Socket(address, port);
-            System.out.println("Connected");
+            System.out.println("Connected to server");
 
-            // takes input from terminal
             input  = new DataInputStream(System.in);
-
-            // sends output to the socket
             out  = new DataOutputStream(socket.getOutputStream());
         }
         catch(UnknownHostException u)
@@ -32,25 +28,26 @@ public class ClientMain
         {
             System.out.println(i);
         }
+        RunMenu();
 
-        // string to read message from input
-        String line = "";
+//        String line = "";
+//
+//        // keep reading until "Over" is input
+//        while (!line.equals("Over"))
+//        {
+//            try
+//            {
+//                line = input.readLine();
+//                out.writeUTF(line);
+//            }
+//            catch(IOException i)
+//            {
+//                System.out.println(i);
+//            }
+//        }
 
-        // keep reading until "Over" is input
-        while (!line.equals("Over"))
-        {
-            try
-            {
-                line = input.readLine();
-                out.writeUTF(line);
-            }
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
-        }
-
-        // close the connection
+    }
+    public static void ClientClose(){
         try
         {
             input.close();
@@ -63,6 +60,31 @@ public class ClientMain
         }
     }
 
+    public static void RunMenu(){
+        Scanner in = new Scanner(System.in);
+        while (true) {
+            System.out.print("1.Sign in\n2.Sign up\n3.exit\n->");
+            String order = in.nextLine();
+
+            //sign in
+            if (order.equals("1")) {
+                System.out.print("Enter username\n->");
+                String username= in.nextLine();
+
+
+            }
+            //sign up
+            else if (order.equals("2")) {
+
+            }
+            //exit
+            else if (order.equals("3")) {
+                //Se rver should close too
+                ClientClose();
+            }else System.out.println("Wrong order!");
+        }
+
+    }
     public static void main(String args[])
     {
         ClientMain client = new ClientMain("127.0.0.1", 5000);

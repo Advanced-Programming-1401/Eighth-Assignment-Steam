@@ -1,3 +1,5 @@
+package Server;
+
 import java.sql.*;
 public class DataBase {
     private String url = "jdbc:postgresql://localhost:5432/postgres";
