@@ -7,12 +7,11 @@ public class DataBase {
     private String pass = "12345";
     private Connection connection;
     private Statement statement;
-    private ResultSet resultSet;
     public void connect() {
         try {
             connection = DriverManager.getConnection(url, user, pass);
             statement = connection.createStatement();
-            resultSet = null;
+            ResultSet resultSet = null;
 
             resultSet = statement.executeQuery("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'games')");
             resultSet.next();
