@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.*;
+
 public class DataBase {
     private String url = "jdbc:postgresql://localhost:5432/postgres";
     private String user = "postgres";
@@ -21,7 +22,8 @@ public class DataBase {
                         "title text not null,\n" +
                         "developer text,\n" +
                         "genre text,\n" +
-                        "price double precision, release_year integer, \n" +
+                        "price double precision," +
+                        " release_year integer, \n" +
                         "controller_support boolean,\n" +
                         "reviews integer,\n" +
                         "size integer not null,\n" +
@@ -35,7 +37,7 @@ public class DataBase {
                         "  values ('323190', 'Frostpunk', '11 bit studios', 'Strategy', 29.99, 2018, False, 91, 944,'/home/abolfazl/Documents/AP/Eighth-Assignment-Steam/src/main/java/Server/Resources/323190.png' );");
 
                 statement.executeUpdate("INSERT INTO games (id, title, developer, genre, price, release_year, controller_support,reviews, size, file_patch)" +
-                        "  values ('359550', 'Frostpunk', '11 bit studios', 'First-person Shooter', 19.99, 2015, True, 82, 561,'/home/abolfazl/Documents/AP/Eighth-Assignment-Steam/src/main/java/Server/Resources/359550.png' );");
+                        "  values ('359550', 'Tom Clancys Rainbow Six Siege', 'Ubisoft', 'First-person Shooter', 19.99, 2015, True, 82, 561,'/home/abolfazl/Documents/AP/Eighth-Assignment-Steam/src/main/java/Server/Resources/359550.png' );");
 
                 statement.executeUpdate("INSERT INTO games (id, title, developer, genre, price, release_year, controller_support,reviews, size, file_patch)" +
                         "  values ('489830', 'The Elder Scrolls V: Skyrim Special Edition', 'Bethesda Game Studios', 'First-person Shooter', 39.99, 2016, True, 96, 677,'/home/abolfazl/Documents/AP/Eighth-Assignment-Steam/src/main/java/Server/Resources/489830.png' );");
@@ -72,7 +74,7 @@ public class DataBase {
             resultSet = statement.executeQuery("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'downloads')");
             resultSet.next();
             if (!resultSet.getBoolean(1)) {
-                statement.executeUpdate("CREATE table downloads( account_id bigint references accounts (id), unique(account_id), game_id text references games (id), download_count integer not null); ");
+                statement.executeUpdate("CREATE table downloads( account_id bigint references accounts (id), game_id text references games (id), download_count integer not null); ");
                 System.out.println("downloads table create");
             }
 
@@ -89,7 +91,6 @@ public class DataBase {
             throw new RuntimeException(e);
         }
     }
-
     public Connection getConnection() {
         return connection;
     }

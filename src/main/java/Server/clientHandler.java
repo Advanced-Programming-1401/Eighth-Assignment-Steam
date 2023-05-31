@@ -1,11 +1,7 @@
 package Server;
 
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,12 +12,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.sql.Statement;
 
 public class clientHandler implements Runnable {
-    private  Socket socket  = null;
+    private static Socket socket  = null;
     private  BufferedReader input = null;
-    private  PrintWriter out = null;
+    private static PrintWriter out = null;
     private static DataBase dataBase = new DataBase();
 
     public clientHandler(Socket socket, DataBase dataBase) {
@@ -66,8 +61,30 @@ public class clientHandler implements Runnable {
                         else out.println("false");
                         break;
 
+                    case "listOfGames":
+                        out.println(listOfGames());
+                        break;
+
+                    case "checkGameName":
+                        String GameName = input.readLine();
+                        if (gameExist(GameName) == true) out.println("true");
+                        else out.println("false");
+                        break;
+
+
+                    case "Download":
+                        String gameName= input.readLine();
+                        String user = input.readLine();
+                        download(gameName, user);
+                        break;
+
+                    case "gameInfo":
+                         gameName = input.readLine();
+                        gameInfo(gameName);
+                        break;
 
                     default:
+                        System.out.println("Command not recognized!");
                         break;
                 }
 
@@ -82,6 +99,18 @@ public class clientHandler implements Runnable {
             String query = "SELECT EXISTS(SELECT 1 FROM accounts WHERE username = ?)";
             PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
             stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getBoolean(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static boolean gameExist(String gameName){
+        try {
+            String query = "SELECT EXISTS(SELECT 1 FROM games WHERE title = ?)";
+            PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
+            stmt.setString(1, gameName);
             ResultSet rs = stmt.executeQuery();
             rs.next();
             return rs.getBoolean(1);
@@ -122,6 +151,137 @@ public class clientHandler implements Runnable {
             resultSet.next();
             if (resultSet.getString(1).equals(hashPassword(password))) return true;
             else return false;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static String listOfGames(){
+        try {
+
+            ResultSet resultSet = dataBase.getStatement().executeQuery("select title from games;");
+            String listOfGames="";
+            while (resultSet.next()){
+                listOfGames += "\\ ";
+                listOfGames += resultSet.getString("title");
+            }
+            return listOfGames;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void download(String gameName, String username){
+        String filePath;
+        try {
+            ResultSet resultSet = dataBase.getStatement().executeQuery("select file_patch from games where title = '"+gameName+"';");
+            resultSet.next();
+             filePath = resultSet.getString(1);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            int bytes = 0;
+            File file = new File(filePath);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            // Here we send the File to Server
+            dataOutputStream.writeLong(file.length());
+            // Here we  break file into chunks
+            byte[] buffer = new byte[4 * 1024];
+            while ((bytes = fileInputStream.read(buffer)) != -1) {
+                // Send the file to Server Socket
+                dataOutputStream.write(buffer, 0, bytes);
+                dataOutputStream.flush();
+            }
+            // close the file here
+            fileInputStream.close();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        AddToDownloads(gameName, username);
+    }
+    public static void AddToDownloads(String gameName, String userName ){
+        try {
+            //get user_id
+            String query = "SELECT id from accounts where username = ?";
+            PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
+            stmt.setString(1, userName);
+            ResultSet resultSet = stmt.executeQuery();
+            resultSet.next();
+            Long user_id = resultSet.getLong(1);
+
+            //get game_id
+            query = "SELECT id from games where title = ?";
+            stmt = dataBase.getConnection().prepareStatement(query);
+            stmt.setString(1, gameName);
+            resultSet = stmt.executeQuery();
+            resultSet.next();
+            String game_id = resultSet.getString(1);
+
+
+            query = "SELECT COUNT(*) FROM downloads WHERE account_id = ? AND game_id = ?";
+            stmt = dataBase.getConnection().prepareStatement(query);
+            stmt.setLong(1, user_id);
+            stmt.setString(2, game_id);
+            resultSet = stmt.executeQuery();
+            resultSet.next();
+            int count = resultSet.getInt(1);
+
+            if (count > 0){
+                query = "SELECT download_count from downloads where account_id = ? AND game_id = ?";
+                stmt = dataBase.getConnection().prepareStatement(query);
+                stmt.setLong(1, user_id);
+                stmt.setString(2, game_id);
+                resultSet = stmt.executeQuery();
+                resultSet.next();
+                int download_count = resultSet.getInt(1);
+                download_count++;
+                query = "UPDATE downloads SET download_count = ? WHERE account_id = ? AND game_id = ?;";
+                stmt = dataBase.getConnection().prepareStatement(query);
+                stmt.setInt(1,download_count);
+                stmt.setLong(2, user_id);
+                stmt.setString(3, game_id);
+                stmt.executeUpdate();
+
+                System.out.println("download_count update to: " + download_count);
+            }
+            else {
+                query = "insert into downloads (account_id, game_id, download_count) values ( ? , ? , 1)";
+                stmt = dataBase.getConnection().prepareStatement(query);
+                stmt.setLong(1, user_id);
+                stmt.setString(2, game_id);
+                stmt.executeUpdate();
+
+                System.out.println("Row add to table");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void gameInfo(String gameName){
+        PreparedStatement stmt = null;
+        try {
+            String query = "select * from games where title = ?";
+            stmt = dataBase.getConnection().prepareStatement(query);
+            stmt.setString(1, gameName);
+            ResultSet resultSet = stmt.executeQuery();
+
+            JSONObject jsonObj = new JSONObject();
+            resultSet.next();
+            jsonObj.put("title", resultSet.getString(2));
+            jsonObj.put("developer", resultSet.getString(3));
+            jsonObj.put("genre", resultSet.getString(4));
+            jsonObj.put("price", resultSet.getDouble(5));
+            jsonObj.put("release_year", resultSet.getInt(6));
+            jsonObj.put("controller_support", resultSet.getBoolean(7));
+            jsonObj.put("reviews", resultSet.getInt(8));
+            jsonObj.put("size", resultSet.getInt(9));
+
+            out.println(jsonObj);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
