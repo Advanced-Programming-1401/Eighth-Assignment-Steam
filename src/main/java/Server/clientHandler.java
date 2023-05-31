@@ -13,88 +13,89 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class clientHandler implements Runnable {
-    private static Socket socket  = null;
-    private  BufferedReader input = null;
-    private static PrintWriter out = null;
-    private static DataBase dataBase = new DataBase();
+public class clientHandler extends Thread {
+    private Socket socket  = null;
+    private BufferedReader input = null;
+    private PrintWriter out = null;
+    private DataBase dataBase = new DataBase();
+    private int i = 0;
 
-    public clientHandler(Socket socket, DataBase dataBase) {
+    public clientHandler(Socket socket,DataBase dataBase,int i) {
+        this.i=i;
         this.socket = socket;
+        this.dataBase = dataBase;
         try {
             input  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out  = new PrintWriter(socket.getOutputStream(),true);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.dataBase = dataBase;
     }
     public void run(){
+        while (menu()){}
+    }
+
+    public boolean menu() {
         try {
-            String line = "";
-            boolean flag = true;
-            while (flag) {
-                line = input.readLine();
-                System.out.println("Server get order: "+line);
-                switch (line) {
+            String order = input.readLine();
+            System.out.println("Server get order: "+order+" from client: "+i);
+            switch (order) {
 
-                    case "usernameExist":
-                        String username = input.readLine();
-                        if (usernameExist(username) == true) out.println("true");
-                        else out.println("false");
-                        break;
+                case "usernameExist":
+                    String username = input.readLine();
+                    if (usernameExist(username) == true) out.println("true");
+                    else out.println("false");
+                    break;
 
-                    case "exit":
-                        flag = false;
-                        break;
+                case "exit":
+                    return false;
 
-                    case "signUp":
-                        String jsonString = input.readLine();
-                        signUp(jsonString);
-                        System.out.println("Create new acount");
-                        break;
+                case "signUp":
+                    String jsonString = input.readLine();
+                    signUp(jsonString);
+                    System.out.println("Create new acount");
+                    break;
 
-                    case "checkPass":
-                        String usernam = input.readLine();
-                        String password = input.readLine();
-                        if (checkPass(usernam, password) == true) out.println("true");
-                        else out.println("false");
-                        break;
+                case "checkPass":
+                    String usernam = input.readLine();
+                    String password = input.readLine();
+                    if (checkPass(usernam, password) == true) out.println("true");
+                    else out.println("false");
+                    break;
 
-                    case "listOfGames":
-                        out.println(listOfGames());
-                        break;
+                case "listOfGames":
+                    out.println(listOfGames());
+                    break;
 
-                    case "checkGameName":
-                        String GameName = input.readLine();
-                        if (gameExist(GameName) == true) out.println("true");
-                        else out.println("false");
-                        break;
+                case "checkGameName":
+                    String GameName = input.readLine();
+                    if (gameExist(GameName) == true) out.println("true");
+                    else out.println("false");
+                    break;
 
 
-                    case "Download":
-                        String gameName= input.readLine();
-                        String user = input.readLine();
-                        download(gameName, user);
-                        break;
+                case "Download":
+                    String gameName= input.readLine();
+                    String user = input.readLine();
+                    download(gameName, user);
+                    break;
 
-                    case "gameInfo":
-                         gameName = input.readLine();
-                        gameInfo(gameName);
-                        break;
+                case "gameInfo":
+                    gameName = input.readLine();
+                    gameInfo(gameName);
+                    break;
 
-                    default:
-                        System.out.println("Command not recognized!");
-                        break;
-                }
-
+                default:
+                    System.out.println("Command not recognized!");
+                    break;
             }
+
         }catch (IOException i) {
             System.out.println(i);
         }
+        return true;
     }
-
-    public static boolean usernameExist(String username) {
+    public  boolean usernameExist(String username) {
         try {
             String query = "SELECT EXISTS(SELECT 1 FROM accounts WHERE username = ?)";
             PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
@@ -106,7 +107,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static boolean gameExist(String gameName){
+    public  boolean gameExist(String gameName){
         try {
             String query = "SELECT EXISTS(SELECT 1 FROM games WHERE title = ?)";
             PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
@@ -118,7 +119,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static void signUp(String jsonString){
+    public  void signUp(String jsonString){
 
         JSONObject jsonObj = new JSONObject(jsonString);
         String query = "INSERT INTO accounts ( username, password, date_of_birth) values(?,?,?)";
@@ -142,7 +143,7 @@ public class clientHandler implements Runnable {
 
 
     }
-    public static boolean checkPass(String username ,String password){
+    public  boolean checkPass(String username ,String password){
         try {
             String query="select password from accounts where username = ?";
             PreparedStatement stmt = dataBase.getConnection().prepareStatement(query);
@@ -155,7 +156,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static String listOfGames(){
+    public  String listOfGames(){
         try {
 
             ResultSet resultSet = dataBase.getStatement().executeQuery("select title from games;");
@@ -170,7 +171,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static void download(String gameName, String username){
+    public  void download(String gameName, String username){
         String filePath;
         try {
             ResultSet resultSet = dataBase.getStatement().executeQuery("select file_patch from games where title = '"+gameName+"';");
@@ -193,7 +194,6 @@ public class clientHandler implements Runnable {
                 dataOutputStream.write(buffer, 0, bytes);
                 dataOutputStream.flush();
             }
-            // close the file here
             fileInputStream.close();
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -203,7 +203,7 @@ public class clientHandler implements Runnable {
 
         AddToDownloads(gameName, username);
     }
-    public static void AddToDownloads(String gameName, String userName ){
+    public  void AddToDownloads(String gameName, String userName ){
         try {
             //get user_id
             String query = "SELECT id from accounts where username = ?";
@@ -262,7 +262,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static void gameInfo(String gameName){
+    public  void gameInfo(String gameName){
         PreparedStatement stmt = null;
         try {
             String query = "select * from games where title = ?";
@@ -286,7 +286,7 @@ public class clientHandler implements Runnable {
             throw new RuntimeException(e);
         }
     }
-    public static String hashPassword(String password) {
+    public  String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hash = md.digest(password.getBytes());

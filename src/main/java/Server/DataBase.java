@@ -82,7 +82,6 @@ public class DataBase {
             throw new RuntimeException(e);
         }
     }
-
      public void closeConnection(){
         try {
             statement.close();

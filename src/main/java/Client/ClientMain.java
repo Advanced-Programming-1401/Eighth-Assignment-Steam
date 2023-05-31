@@ -77,6 +77,7 @@ public class ClientMain
             else if (order.equals("2")) {
                 System.out.print("Enter username\n->");
                 String username= in.nextLine();
+                System.out.println(username);
                 try {
                     out.println("usernameExist");
                     out.println(username);
@@ -171,7 +172,6 @@ public class ClientMain
                         out.println(username);
 
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
-                        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                         int bytes = 0;
                         FileOutputStream fileOutputStream = new FileOutputStream("/home/abolfazl/Documents/AP/Eighth-Assignment-Steam/src/main/java/Client/Downloads/"+gameName+".png");
                         long size = dataInputStream.readLong(); // read file size

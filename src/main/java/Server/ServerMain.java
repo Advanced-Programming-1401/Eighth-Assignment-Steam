@@ -2,45 +2,29 @@ package Server;
 
 import java.net.*;
 import java.io.*;
-
 public class ServerMain{
-    private  Socket  socket   = null;
-    private  ServerSocket server   = null;
-
-    private static DataBase dataBase = new DataBase();
-
-    public ServerMain(int port){
+    public static void main(String args[]) {
+        DataBase dataBase = new DataBase();
+        dataBase.connect();
         try {
-            server = new ServerSocket(port);
+            ServerSocket server = new ServerSocket(1402);
             System.out.println("Server started");
+
+            int i = 0;
             while (true)
             {
+                i++;
                 System.out.println("Waiting for a client ...");
-                socket = server.accept();
-                System.out.println("Client accepted");
-                clientHandler clientHandler = new clientHandler(socket,dataBase);
-                Thread thread = new Thread(clientHandler);
-                thread.start();
+                Socket socket = server.accept();
+                System.out.println("Client accepted "+ socket.getRemoteSocketAddress());
+                clientHandler clientHandler = new clientHandler(socket, dataBase, i);
+                clientHandler.start();
             }
         } catch (IOException i) {
             System.out.println(i);
         }
-    }
-//    public static void ServerClose(){
-//        try {
-//            socket.close();
-//            input.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-    public static void main(String args[]) {
-        dataBase.connect();
-        ServerMain server = new ServerMain(1402);
 
         dataBase.closeConnection();
         System.out.println("database closed");
-//        ServerClose();
-//        System.out.println("server closed");
     }
 }
